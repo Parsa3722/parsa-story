@@ -20,6 +20,7 @@ def tl(d, t, f): return d.textlength(t, font=f, direction="rtl", language="fa")
 def T(d, xy, t, f, fill, anchor="ma"): d.text(xy, t, font=f, fill=fill, anchor=anchor, direction="rtl", language="fa")
 def TL(d, xy, t, f, fill, anchor="ma"): d.text(xy, t, font=f, fill=fill, anchor=anchor)
 
+SETUP = {"h2_buy": 1, "l2_sell": 1, "bo_buy": 3, "bo_sell": 3}
 KINDS = {
  "h2_buy":  dict(side="buy",  name="High 2", why="روند صعودی قوی، دو تلاش برای پایین رفتن نزدیک مووینگ بیست، و یه کندل سیگنال صعودی قوی. ورود: بالای سقف کندل سیگنال."),
  "l2_sell": dict(side="sell", name="Low 2",  why="روند نزولی قوی، دو تلاش برای بالا رفتن نزدیک مووینگ بیست، و یه کندل سیگنال نزولی قوی. ورود: زیر کف کندل سیگنال."),
@@ -129,7 +130,9 @@ def pill(d, cx, cy, txt, f, fill, tc="#06111F", padx=60, h=None):
 def question(seed, out):
     G = gen(seed); img = bg(); header(img, "چالش چارت امشب")
     d = ImageDraw.Draw(img, "RGBA")
-    T(d, (W / 2, 400), "اینجا خرید یا فروش؟", F("ExtraBold", 92), PAPER)
+    T(d, (W / 2, 365), "اینجا خرید یا فروش؟", F("ExtraBold", 92), PAPER)
+    n = fa(SETUP[G["kind"]])
+    T(d, (W / 2, 505), f"ستاپ {n} از «ده ستاپ طلایی ال بروکس» | آموزش رایگانش تو بایو", F("Bold", 31), GOLD)
     X, Y, step = chart(img, G, G["nq"])
     d = ImageDraw.Draw(img, "RGBA")
     i = G["nq"] - 1; o, h, l, c = G["C"][i]; cx = X(i); cy = (Y(h) + Y(l)) / 2; r = max(46, (Y(l) - Y(h)) / 2 + 26)
@@ -173,8 +176,9 @@ def answer(seed, out):
         else: cur = t
     lines.append(cur); yy = 1440
     for ln in lines[:3]: T(d, (W - 100, yy), ln, bf, PAPER, "ra"); yy += 54
-    T(d, (W / 2, 1650), "امشب ساعت ۹، چالش بعدی 🔥".replace(" 🔥", ""), F("Bold", 40), GOLD)
-    TL(d, (W / 2, 1708), HANDLE, F("Bold", 34), MUTE)
+    n = fa(SETUP[G["kind"]])
+    T(d, (W / 2, 1648), f"آموزش کامل ستاپ {n} از «ده ستاپ طلایی ال بروکس» رایگانه؛ لینکش تو بایو", F("Bold", 31), GOLD)
+    T(d, (W / 2, 1700), "امشب ساعت ۹، چالش بعدی", F("Bold", 34), PAPER)
     img.convert("RGB").save(out, quality=93)
 if __name__ == "__main__":
     mode, seed, out = sys.argv[1], sys.argv[2], sys.argv[3]
